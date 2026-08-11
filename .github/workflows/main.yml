@@ -31,6 +31,7 @@ jobs:
       TOPIC_IDS: ${{ github.event.inputs.topic_ids || '' }}
       MAX_DOWNLOADS: '80'
       PER_TOPIC_DOWNLOADS: '10'
+      EXTRACT_ZIPS: '0'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -53,12 +54,24 @@ jobs:
           TOPIC_IDS: ${{ env.TOPIC_IDS }}
         run: python tools/fetch_candidates.py
 
-      - name: Package candidate repos
+      - name: Upload candidates JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidates_json
+          path: |
+            candidates/all_candidates.json
+            candidates/by_topic
+            candidates/rejected_sample.json
+          if-no-files-found: warn
+
+      - name: Package candidate repos (zip only)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAX_DOWNLOADS: ${{ env.MAX_DOWNLOADS }}
           PER_TOPIC_DOWNLOADS: ${{ env.PER_TOPIC_DOWNLOADS }}
           TOPIC_IDS: ${{ env.TOPIC_IDS }}
+          EXTRACT_ZIPS: ${{ env.EXTRACT_ZIPS }}
         run: python tools/package_skills.py
 
       - name: Upload skills artifact
@@ -66,6 +79,7 @@ jobs:
         with:
           name: skills_archive
           path: artifacts/skills
+          if-no-files-found: warn
 
       - name: Create candidate PRs
         env:
