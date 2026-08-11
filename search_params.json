@@ -1,0 +1,172 @@
+{
+  "global": {
+    "stars": 3,
+    "date_from": null,
+    "date_to": null,
+    "pushed_within_days": 730,
+    "max_fetch_per_topic": 100,
+    "target_per_topic": 10,
+    "min_score": 7.0,
+    "require_finance_hit": true
+  },
+  "topics": [
+    {
+      "id": "industry_chain",
+      "name": "产业链研究",
+      "category": "research-industrial",
+      "search_queries": [
+        "\"industry chain\" OR 产业链研究 OR 产业链分析 OR 产业研究",
+        "\"market sizing\" OR 市场规模 OR 渗透率 OR 国产替代",
+        "\"competitive landscape\" OR 景气度 OR 产能利用率 OR 市占率"
+      ],
+      "topic_signals": [
+        "产业链", "industry chain", "supply chain analysis", "市场规模", "market sizing",
+        "渗透率", "penetration rate", "市占率", "market share", "国产替代", "景气度",
+        "产能利用率", "护城河", "competitive landscape", "产业研究", "industry research",
+        "上下游", "value chain", "tam sam"
+      ]
+    },
+    {
+      "id": "biopharma",
+      "name": "生物医药研究",
+      "category": "research-industrial",
+      "search_queries": [
+        "创新药 OR 生物医药 OR biopharma OR \"drug pipeline\"",
+        "靶点 OR 适应症 OR CDMO OR \"phase iii\" OR \"license-out\"",
+        "医保谈判 OR 集采 OR biotech finance OR pharma research"
+      ],
+      "topic_signals": [
+        "生物医药", "创新药", "biotech", "biopharma", "pharma", "pipeline", "管线",
+        "靶点", "适应症", "indication", "phase iii", "phase 3", "license-out",
+        "cro", "cdmo", "获批", "集采", "医保谈判", "clinical trial", "drug discovery"
+      ]
+    },
+    {
+      "id": "credit",
+      "name": "信用研究",
+      "category": "research-credit",
+      "search_queries": [
+        "\"credit risk\" OR \"credit rating\" OR \"credit analysis\" OR 信用评级 OR 信用研究",
+        "\"fixed income\" OR \"credit spread\" OR \"bond default\" OR 信用债 OR 偿债能力",
+        "\"debt restructuring\" OR 债务重组 OR 主体评级 OR 债项评级 OR 不良率",
+        "拨备覆盖率 OR 化债 OR \"rating downgrade\" OR 违约概率 OR \"pd model\""
+      ],
+      "topic_signals": [
+        "信用研究", "信用评级", "信用风险", "信用债", "credit risk", "credit rating",
+        "credit spread", "credit analysis", "fixed income", "主体评级", "债项评级",
+        "评级下调", "rating downgrade", "债务重组", "debt restructuring", "偿债能力",
+        "solvency", "不良率", "拨备覆盖率", "化债", "违约概率", "pd model", "lgd",
+        "bond default", "credit model", "credit scoring", "信用评分"
+      ]
+    },
+    {
+      "id": "trading_quant",
+      "name": "投资交易与量化",
+      "category": "research-trading",
+      "search_queries": [
+        "\"quant trading\" OR \"algorithmic trading\" OR backtesting OR 量化交易",
+        "\"factor investing\" OR \"portfolio optimization\" OR 多因子 OR \"risk parity\"",
+        "backtrader OR qlib OR vnpy OR zipline OR quantconnect"
+      ],
+      "topic_signals": [
+        "quant trading", "quantitative", "backtest", "backtesting", "algorithmic trading",
+        "trading strategy", "量化交易", "多因子", "factor investing", "portfolio optimization",
+        "asset allocation", "risk parity", "sharpe", "drawdown", "vnpy", "backtrader",
+        "qlib", "zipline", "order book", "arbitrage", "hedging", "alpha factor"
+      ]
+    },
+    {
+      "id": "financial_products",
+      "name": "金融产品研究",
+      "category": "research-products",
+      "search_queries": [
+        "基金研究 OR \"fund analysis\" OR \"mutual fund\" OR ETF research",
+        "REITs OR 可转债 OR \"convertible bond\" OR QDII OR FOF",
+        "\"tracking error\" OR morningstar OR IOPV OR 净值分析"
+      ],
+      "topic_signals": [
+        "基金研究", "fund analysis", "etf", "mutual fund", "reits", "fof", "qdii",
+        "可转债", "convertible bond", "净值", "tracking error", "morningstar",
+        "calmar", "sortino", "information ratio", "iopv", "溢价率", "折价率",
+        "金融产品", "wealth management"
+      ]
+    },
+    {
+      "id": "data_aggregator",
+      "name": "金融数据聚合",
+      "category": "data-aggregator",
+      "search_queries": [
+        "akshare OR tushare OR yfinance OR baostock",
+        "\"market data api\" OR \"financial data api\" OR \"sec edgar\" OR xbrl",
+        "金融数据 OR 行情数据 OR \"stock data\" api"
+      ],
+      "topic_signals": [
+        "akshare", "tushare", "baostock", "yfinance", "market data", "financial data",
+        "sec edgar", "xbrl", "行情数据", "金融数据", "data api", "polygon.io",
+        "finnhub", "alpha vantage", "quandl", "ccxt"
+      ]
+    },
+    {
+      "id": "data_indicators",
+      "name": "指标查询",
+      "category": "data-indicators",
+      "search_queries": [
+        "\"technical indicator\" OR MACD OR RSI OR \"bollinger bands\"",
+        "财务指标 OR \"financial ratios\" OR \"valuation metrics\" OR DCF",
+        "指标库 OR \"indicator library\" OR 因子库 OR \"factor library\""
+      ],
+      "topic_signals": [
+        "technical indicator", "指标库", "macd", "rsi", "bollinger", "财务指标",
+        "financial ratio", "valuation metrics", "dcf", "factor library", "因子库",
+        "technical analysis", "基本面指标"
+      ]
+    },
+    {
+      "id": "data_knowledge",
+      "name": "金融知识库",
+      "category": "data-knowledge",
+      "search_queries": [
+        "\"finance knowledge graph\" OR 金融知识图谱 OR \"financial rag\"",
+        "\"finance agent\" OR \"trading agent\" OR \"financial skill\" OR \"sec filing rag\"",
+        "\"earnings call\" rag OR \"financial qa\" OR 研报 知识库"
+      ],
+      "topic_signals": [
+        "knowledge graph", "知识图谱", "financial rag", "检索增强", "finance agent",
+        "trading agent", "financial skill", "knowledge base", "知识库", "earnings call",
+        "financial qa", "finbert", "sec filing"
+      ]
+    }
+  ],
+  "finance_signals": [
+    "finance", "financial", "fintech", "stock", "equity", "trading", "trader", "invest",
+    "investment", "portfolio", "quant", "quantitative", "backtest", "market data",
+    "证券", "股票", "基金", "债券", "期货", "期权", "外汇", "理财", "资管", "投行",
+    "研报", "财报", "估值", "回测", "量化", "行情", "交易", "信用", "固收",
+    "akshare", "tushare", "yfinance", "vnpy", "qlib", "backtrader", "ccxt",
+    "hedge fund", "asset management", "capital market", "credit risk", "fixed income"
+  ],
+  "skill_signals": [
+    "skill", "agent", "mcp", "notebook", "jupyter", "template", "playbook", "workflow",
+    "framework", "toolkit", "pipeline", "research", "analysis", "backtest", "strategy",
+    "方法论", "模板", "指标", "knowledge", "rag", "skill.md", "model"
+  ],
+  "blacklist_keywords": [
+    "new grad", "new-grad", "internship", "internships", "jobs", "job board", "hiring",
+    "校招", "社招", "招聘", "简历", "resume", "leetcode",
+    "game engine", "gaming", "minecraft", "genshin", "原神", "galgame", "emulator",
+    "nintendo", "ryujinx", "steam", "unity game", "unreal engine",
+    "keygen", "crack", "spoofer", "njrat", "free download",
+    "quantization", "quantized", "llm quantization", "model quantization",
+    "quantum", "quantum computing", "quantum toolkit", "qubit", "qecc", "量子计算", "量子通信",
+    "movie", "电影", "music player", "novel", "小说", "manga", "漫画", "anime", "短剧",
+    "管理后台", "后台管理", "rbac", "多租户", "商城", "电商", "进销存",
+    "homework", "assignment", "coursework", "课程设计", "毕业设计", "高考真题",
+    "firmware", "固件", "嵌入式", "无人机", "fpga", "verilog", "pcb",
+    "penetration test", "pentest", "vulnerability scanner", "exploit", "红队", "waf bypass",
+    "dotfiles", "clash tunnel", "vpn client", "占星", "astrology",
+    "casino", "gambling", "betting", "lottery", "poker bot", "blackjack", "roulette",
+    "赌博", "彩票", "博彩", "stock photo", "warehouse inventory",
+    "portfolio website", "personal portfolio", "design portfolio", "作品集",
+    "hackathon listing", "tournament draw", "npc agent", "arxiv daily", "cv-arxiv"
+  ]
+}
