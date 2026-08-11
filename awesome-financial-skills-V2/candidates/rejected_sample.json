@@ -1,0 +1,282 @@
+[
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "hard_negative:量子计算",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "Dujltqzv/Some-Many-Books"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:招聘",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "cirosantilli/china-dictatorship"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:招聘",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "gege-circle/.github"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:嵌入式",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "ruankaodaren/ruankao"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_topic_signal",
+    "score": 3.5,
+    "full_name": "CarryChang/Customer_Satisfaction_Analysis"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "RavelloH/NeutralPress"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "337547038/vue-form-design"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:招聘",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "cirosantilli/china-dictatroship-7"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "hongmaple/octopus"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:简历",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "cirosantilli/cirosantilli"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "i-am-xjizhi/MPScan"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "FlyingIceyyds/BW16-Tools"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_topic_signal",
+    "score": 4.5,
+    "full_name": "HKUSTDial/DeepEar"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "giteecode/JwSystemPublic"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:招聘",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "mRFWq7LwNPZjaVv5v6eo/cihna-dictattorshrip-8"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "1dyer/bilibili-comment-crawler"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "liangdabiao/SeekMoney-ai"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 3.0,
+    "full_name": "hnking-star/FlySecAgent"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "zetaloop/chatgpt-checker-next"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:毕业设计",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "small-bears/students"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:毕业设计",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "small-bears/task"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 3.0,
+    "full_name": "liangdabiao/exa-research-mcp-skill"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "zhengkaixing/kxmall"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "xiamuceer-j/WeChatPadPro"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_topic_signal",
+    "score": 2.5,
+    "full_name": "Fankekeke/EVA-2"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "mingshenhk/ChenYanXi"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 2.0,
+    "full_name": "phish-tech/mmWave-Heartbeat-Dataset-Preprocessing-Toolbox-"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 1.0,
+    "full_name": "Priyadarshini-K176/Credit-Risk-Model"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "JackJiang2011/harmonychat"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 1.0,
+    "full_name": "ccmusic-database/ccmusic-database.github.io"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 1.0,
+    "full_name": "Hazrat-Ali9/Heterogeneous-Graph-Learning-with-Causal-Recourse-for-MSME-Credit-Risk"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "1dyer/weibo-comment-crawler"
+  },
+  {
+    "_reject": true,
+    "score": 0.0,
+    "rejected": true,
+    "reject_reason": "blacklist:管理后台",
+    "finance_hits": [],
+    "topic_hits": [],
+    "skill_hits": [],
+    "full_name": "Descartes007/no009_EducationalManagerSys"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "337547038/ak-design-manage"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 1.0,
+    "full_name": "W-Y-P/credit-risk-model"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "WeChatAPIs/WeChatMsgHistory_real"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 3.0,
+    "full_name": "hsbc/pyratings"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 0.0,
+    "full_name": "whale4113/weread-downloader"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 2.0,
+    "full_name": "monetjoe/ustc_software2013_wiki"
+  },
+  {
+    "_reject": true,
+    "reject_reason": "no_finance_signal",
+    "score": 2.0,
+    "full_name": "tangdun2025/research_agent"
+  }
+]
