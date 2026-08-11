@@ -2,18 +2,18 @@
 """
 Download high-quality candidate repos as zipballs.
 
-Prefer topic-grouped candidates when present:
-  candidates/by_topic/*.json  -> artifacts/skills/<topic_id>/<owner_repo>/
-Also writes a flat copy under artifacts/skills/_all/ for convenience.
+Default for CI: keep .zip only (do NOT extract). Extracted trees often contain
+filenames with ':' etc. that GitHub Actions artifacts reject.
 
 Env:
   - GITHUB_TOKEN
-  - MAX_DOWNLOADS       total cap across all topics (default 80)
+  - MAX_DOWNLOADS       total cap (default 80)
   - PER_TOPIC_DOWNLOADS per-topic cap (default 10)
-  - CANDIDATES_JSON     fallback merged file (default candidates/all_candidates.json)
-  - CANDIDATES_DIR      by-topic dir (default candidates/by_topic)
+  - CANDIDATES_JSON     default candidates/all_candidates.json
+  - CANDIDATES_DIR      default candidates/by_topic
   - SKIP_EXISTING       default 1
   - TOPIC_IDS           optional comma filter
+  - EXTRACT_ZIPS        set 1 to extract locally (default 0)
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 import shutil
 import time
 import traceback
@@ -35,12 +36,16 @@ PER_TOPIC_DOWNLOADS = int(os.getenv("PER_TOPIC_DOWNLOADS") or "10")
 CANDIDATES_JSON = os.getenv("CANDIDATES_JSON") or "candidates/all_candidates.json"
 CANDIDATES_DIR = pathlib.Path(os.getenv("CANDIDATES_DIR") or "candidates/by_topic")
 SKIP_EXISTING = os.getenv("SKIP_EXISTING", "1") not in ("0", "false", "no")
+EXTRACT_ZIPS = os.getenv("EXTRACT_ZIPS", "0").lower() in ("1", "true", "yes")
 OUT_DIR = pathlib.Path("artifacts/skills")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 HEADERS = {"Accept": "application/vnd.github+json"}
 if GITHUB_TOKEN:
     HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
+
+# Characters forbidden in GitHub Actions artifact paths
+_INVALID = re.compile(r'[":<>|*?\r\n]')
 
 
 def read_json_list(path: pathlib.Path | str) -> list[dict]:
@@ -76,13 +81,14 @@ def load_candidates() -> list[dict]:
         if topic_filter:
             items = [it for it in items if it.get("topic_id") in topic_filter]
 
-    # Prefer higher score first
-    items.sort(key=lambda x: (x.get("topic_id") or "", -(x.get("score") or 0), -(x.get("stars") or 0)))
+    items.sort(
+        key=lambda x: (x.get("topic_id") or "", -(x.get("score") or 0), -(x.get("stars") or 0))
+    )
     return items
 
 
 def safe_name(full_name: str) -> str:
-    return full_name.replace("/", "_")
+    return _INVALID.sub("_", full_name.replace("/", "_"))
 
 
 def download_zipball(full_name: str, dest_zip: pathlib.Path, max_retries: int = 3) -> bool:
@@ -94,10 +100,7 @@ def download_zipball(full_name: str, dest_zip: pathlib.Path, max_retries: int = 
                 dest_zip.write_bytes(r.content)
                 return True
             print(f"  download fail {full_name}: {r.status_code}")
-            if r.status_code == 403:
-                time.sleep(5 * attempt)
-            else:
-                time.sleep(2 * attempt)
+            time.sleep(2 * attempt)
         except Exception as e:
             print(f"  exception {full_name}: {e}")
             traceback.print_exc()
@@ -105,14 +108,23 @@ def download_zipball(full_name: str, dest_zip: pathlib.Path, max_retries: int = 
     return False
 
 
-def extract_zip(zip_path: pathlib.Path, dest_dir: pathlib.Path) -> None:
+def safe_extract(zip_path: pathlib.Path, dest_dir: pathlib.Path) -> None:
+    """Extract zip, renaming members that contain OS/artifact-illegal characters."""
     dest_dir.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(dest_dir)
+        for info in zf.infolist():
+            raw = info.filename
+            cleaned = _INVALID.sub("_", raw)
+            target = dest_dir / cleaned
+            if info.is_dir() or raw.endswith("/"):
+                target.mkdir(parents=True, exist_ok=True)
+                continue
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with zf.open(info) as src, open(target, "wb") as dst:
+                shutil.copyfileobj(src, dst)
 
 
 def select_downloads(items: list[dict]) -> list[dict]:
-    """Cap per topic and globally; dedupe by full_name."""
     seen = set()
     per_topic: dict[str, int] = {}
     todo = []
@@ -131,10 +143,8 @@ def select_downloads(items: list[dict]) -> list[dict]:
     return todo
 
 
-def write_meta(dest_dir: pathlib.Path, meta: dict[str, Any]) -> None:
-    (dest_dir / "candidate_meta.json").write_text(
-        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+def write_meta(path: pathlib.Path, meta: dict[str, Any]) -> None:
+    path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def main() -> None:
@@ -146,7 +156,8 @@ def main() -> None:
     todo = select_downloads(items)
     print(
         f"Downloading {len(todo)} repos "
-        f"(MAX_DOWNLOADS={MAX_DOWNLOADS}, PER_TOPIC={PER_TOPIC_DOWNLOADS})"
+        f"(MAX_DOWNLOADS={MAX_DOWNLOADS}, PER_TOPIC={PER_TOPIC_DOWNLOADS}, "
+        f"EXTRACT_ZIPS={int(EXTRACT_ZIPS)})"
     )
 
     failed = []
@@ -155,10 +166,12 @@ def main() -> None:
         tid = entry.get("topic_id") or "unknown"
         topic_dir = OUT_DIR / tid
         topic_dir.mkdir(parents=True, exist_ok=True)
-        zip_path = topic_dir / f"{safe_name(full)}.zip"
-        extract_dir = topic_dir / safe_name(full)
+        base = safe_name(full)
+        zip_path = topic_dir / f"{base}.zip"
+        meta_path = topic_dir / f"{base}.meta.json"
+        extract_dir = topic_dir / base
 
-        if SKIP_EXISTING and (zip_path.exists() or extract_dir.exists()):
+        if SKIP_EXISTING and zip_path.exists():
             print(f"[{idx}/{len(todo)}] skip existing {tid}/{full}")
             continue
 
@@ -168,18 +181,17 @@ def main() -> None:
             failed.append(entry)
             continue
 
-        try:
-            if extract_dir.exists():
-                shutil.rmtree(extract_dir)
-            extract_zip(zip_path, extract_dir)
-            write_meta(extract_dir, entry)
-            # keep disk lean: remove zip after extract
-            zip_path.unlink(missing_ok=True)
-        except Exception as e:
-            print("  extract failed:", e)
-            failed.append(entry)
+        write_meta(meta_path, entry)
 
-    # Persist run outputs for artifact upload
+        if EXTRACT_ZIPS:
+            try:
+                if extract_dir.exists():
+                    shutil.rmtree(extract_dir)
+                safe_extract(zip_path, extract_dir)
+                write_meta(extract_dir / "candidate_meta.json", entry)
+            except Exception as e:
+                print("  extract failed (zip kept):", e)
+
     merged = pathlib.Path(CANDIDATES_JSON)
     if merged.exists():
         shutil.copy(merged, OUT_DIR / "all_candidates.json")
