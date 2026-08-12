@@ -29,8 +29,9 @@ jobs:
       DRY_RUN: ${{ github.event.inputs.dry_run || '1' }}
       TARGET_PER_TOPIC: ${{ github.event.inputs.target_per_topic || '10' }}
       TOPIC_IDS: ${{ github.event.inputs.topic_ids || '' }}
-      MAX_DOWNLOADS: '80'
-      PER_TOPIC_DOWNLOADS: '10'
+      # Keep downloads aligned with scored candidate list size
+      PER_TOPIC_DOWNLOADS: ${{ github.event.inputs.target_per_topic || '10' }}
+      MAX_DOWNLOADS: '200'
       EXTRACT_ZIPS: '0'
     steps:
       - name: Checkout repo
