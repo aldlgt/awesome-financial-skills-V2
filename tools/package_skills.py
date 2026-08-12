@@ -7,8 +7,9 @@ filenames with ':' etc. that GitHub Actions artifacts reject.
 
 Env:
   - GITHUB_TOKEN
-  - MAX_DOWNLOADS       total cap (default 80)
-  - PER_TOPIC_DOWNLOADS per-topic cap (default 10)
+  - TARGET_PER_TOPIC    used as default per-topic download cap
+  - PER_TOPIC_DOWNLOADS per-topic cap (default: TARGET_PER_TOPIC or 10)
+  - MAX_DOWNLOADS       total cap (default: max(80, PER_TOPIC_DOWNLOADS*20))
   - CANDIDATES_JSON     default candidates/all_candidates.json
   - CANDIDATES_DIR      default candidates/by_topic
   - SKIP_EXISTING       default 1
@@ -31,8 +32,11 @@ from typing import Any
 import requests
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN") or os.getenv("SECRET_TOKEN")
-MAX_DOWNLOADS = int(os.getenv("MAX_DOWNLOADS") or "80")
-PER_TOPIC_DOWNLOADS = int(os.getenv("PER_TOPIC_DOWNLOADS") or "10")
+# Prefer explicit PER_TOPIC_DOWNLOADS; otherwise follow TARGET_PER_TOPIC so
+# downloaded zips match the scored candidate list size.
+_DEFAULT_PER_TOPIC = os.getenv("TARGET_PER_TOPIC") or "10"
+PER_TOPIC_DOWNLOADS = int(os.getenv("PER_TOPIC_DOWNLOADS") or _DEFAULT_PER_TOPIC)
+MAX_DOWNLOADS = int(os.getenv("MAX_DOWNLOADS") or str(max(80, PER_TOPIC_DOWNLOADS * 20)))
 CANDIDATES_JSON = os.getenv("CANDIDATES_JSON") or "candidates/all_candidates.json"
 CANDIDATES_DIR = pathlib.Path(os.getenv("CANDIDATES_DIR") or "candidates/by_topic")
 SKIP_EXISTING = os.getenv("SKIP_EXISTING", "1") not in ("0", "false", "no")
