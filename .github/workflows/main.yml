@@ -13,6 +13,10 @@ on:
         description: 'Quality skills to keep per topic after scoring'
         required: false
         default: '10'
+      min_stars:
+        description: 'Minimum GitHub stars required (stars:>=N)'
+        required: false
+        default: '3'
       dry_run:
         description: 'Dry run (1) or apply/create PRs (0)'
         required: false
@@ -28,6 +32,7 @@ jobs:
     env:
       DRY_RUN: ${{ github.event.inputs.dry_run || '1' }}
       TARGET_PER_TOPIC: ${{ github.event.inputs.target_per_topic || '10' }}
+      MIN_STARS: ${{ github.event.inputs.min_stars || '3' }}
       TOPIC_IDS: ${{ github.event.inputs.topic_ids || '' }}
       # Keep downloads aligned with scored candidate list size
       PER_TOPIC_DOWNLOADS: ${{ github.event.inputs.target_per_topic || '10' }}
@@ -52,6 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           TARGET_PER_TOPIC: ${{ env.TARGET_PER_TOPIC }}
+          MIN_STARS: ${{ env.MIN_STARS }}
           TOPIC_IDS: ${{ env.TOPIC_IDS }}
         run: python tools/fetch_candidates.py
 
