@@ -11,6 +11,7 @@ Env:
   - GITHUB_TOKEN (required)
   - MAX_RESULTS          override global.max_fetch_per_topic
   - TARGET_PER_TOPIC     override global.target_per_topic
+  - MIN_STARS            override global.stars (minimum stars filter)
   - TOPIC_IDS            comma-separated topic ids to run (default: all)
   - SEARCH_PARAMS        path to config JSON (default: search_params.json)
 
@@ -260,6 +261,10 @@ def main() -> None:
         gcfg["max_fetch_per_topic"] = int(os.getenv("MAX_RESULTS"))
     if os.getenv("TARGET_PER_TOPIC"):
         gcfg["target_per_topic"] = int(os.getenv("TARGET_PER_TOPIC"))
+    if os.getenv("MIN_STARS"):
+        gcfg["stars"] = int(os.getenv("MIN_STARS"))
+
+    print(f"Config: stars>={gcfg.get('stars')}, target_per_topic={gcfg.get('target_per_topic')}")
 
     max_fetch = int(gcfg.get("max_fetch_per_topic", 80))
     topics = select_topics(cfg)
