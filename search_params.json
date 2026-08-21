@@ -16,14 +16,18 @@
       "category": "research-industrial",
       "search_queries": [
         "\"industry chain\" OR 产业链研究 OR 产业链分析 OR 产业研究",
+        "\"supply chain\" OR \"supply-chain\" OR 供应链 OR \"stock research\" OR \"investment research\"",
         "\"market sizing\" OR 市场规模 OR 渗透率 OR 国产替代",
-        "\"competitive landscape\" OR 景气度 OR 产能利用率 OR 市占率"
+        "\"competitive landscape\" OR 景气度 OR 产能利用率 OR 市占率",
+        "\"agent skill\" OR SKILL.md 产业链 OR 投研 OR \"bottleneck\""
       ],
       "topic_signals": [
-        "产业链", "industry chain", "supply chain analysis", "市场规模", "market sizing",
+        "产业链", "industry chain", "supply chain", "supply-chain", "供应链",
+        "supply chain analysis", "市场规模", "market sizing",
         "渗透率", "penetration rate", "市占率", "market share", "国产替代", "景气度",
         "产能利用率", "护城河", "competitive landscape", "产业研究", "industry research",
-        "上下游", "value chain", "tam sam"
+        "上下游", "value chain", "stock research", "investment research",
+        "bottleneck", "投研", "瓶颈", "serenity"
       ]
     },
     {
@@ -141,14 +145,16 @@
     "finance", "financial", "fintech", "stock", "equity", "trading", "trader", "invest",
     "investment", "portfolio", "quant", "quantitative", "backtest", "market data",
     "证券", "股票", "基金", "债券", "期货", "期权", "外汇", "理财", "资管", "投行",
-    "研报", "财报", "估值", "回测", "量化", "行情", "交易", "信用", "固收",
+    "研报", "财报", "估值", "回测", "量化", "行情", "交易", "信用", "固收", "投研",
     "akshare", "tushare", "yfinance", "vnpy", "qlib", "backtrader", "ccxt",
-    "hedge fund", "asset management", "capital market", "credit risk", "fixed income"
+    "hedge fund", "asset management", "capital market", "credit risk", "fixed income",
+    "stock research", "investment research"
   ],
   "skill_signals": [
     "skill", "agent", "mcp", "notebook", "jupyter", "template", "playbook", "workflow",
     "framework", "toolkit", "pipeline", "research", "analysis", "backtest", "strategy",
-    "方法论", "模板", "指标", "knowledge", "rag", "skill.md", "model"
+    "方法论", "模板", "指标", "knowledge", "rag", "skill.md", "model", "agent skill",
+    "agent-skills"
   ],
   "blacklist_keywords": [
     "new grad", "new-grad", "internship", "internships", "jobs", "job board", "hiring",
