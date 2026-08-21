@@ -107,7 +107,7 @@ def build_topic_queries(topic: dict, gcfg: dict) -> list[str]:
 
 
 def safe_repo_info(repo) -> dict:
-    """Serialize search hit without extra API calls (avoid repo.topics)."""
+    """Serialize search hit without eager topic API calls."""
     updated = getattr(repo, "updated_at", None)
     return {
         "full_name": getattr(repo, "full_name", None),
@@ -120,6 +120,18 @@ def safe_repo_info(repo) -> dict:
         "archived": getattr(repo, "archived", False),
         "topics": [],
     }
+
+
+def enrich_topics(repo, info: dict) -> dict:
+    """Lazily fetch GitHub topics when name/desc alone is not enough."""
+    if info.get("topics"):
+        return info
+    try:
+        topics = list(repo.get_topics())
+        info = {**info, "topics": topics}
+    except Exception as e:
+        print(f"  topics fetch failed for {info.get('full_name')}: {e}")
+    return info
 
 
 def evaluate_repo(info: dict, topic: dict, cfg: dict, gcfg: dict) -> dict | None:
@@ -156,10 +168,10 @@ def evaluate_repo(info: dict, topic: dict, cfg: dict, gcfg: dict) -> dict | None
             "reject_reason": "no_topic_signal",
             "score": result["score"],
             "full_name": info.get("full_name"),
+            "_retry_with_topics": True,
         }
 
     min_score = float(gcfg.get("min_score", 6.0))
-    # Mild star bonus (capped) so tiny junk repos don't dominate, but stars aren't everything
     stars = info.get("stars") or 0
     star_bonus = min(2.0, (stars or 0) / 200.0)
     final_score = result["score"] + star_bonus
@@ -170,6 +182,7 @@ def evaluate_repo(info: dict, topic: dict, cfg: dict, gcfg: dict) -> dict | None
             "reject_reason": f"low_score:{final_score}",
             "score": final_score,
             "full_name": info.get("full_name"),
+            "_retry_with_topics": True,
         }
 
     return {
@@ -221,7 +234,18 @@ def search_topic(g: Github, topic: dict, cfg: dict, gcfg: dict, max_fetch: int) 
                 judged = evaluate_repo(info, topic, cfg, gcfg)
                 if not judged:
                     continue
+                # Name/desc missed topic signals: retry once with GitHub topics
+                if (
+                    judged.get("_reject")
+                    and judged.get("_retry_with_topics")
+                    and not info.get("topics")
+                ):
+                    info = enrich_topics(repo, info)
+                    judged = evaluate_repo(info, topic, cfg, gcfg)
+                    if not judged:
+                        continue
                 if judged.get("_reject"):
+                    judged.pop("_retry_with_topics", None)
                     if len(rejected) < 40:
                         rejected.append(judged)
                     continue
