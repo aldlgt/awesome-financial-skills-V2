@@ -7,7 +7,6 @@ import re
 from typing import Iterable, List, Sequence
 
 # Short / ambiguous tokens that must not match longer unrelated words.
-# e.g. "quant" must not hit "quantum" / "quantization"
 _BOUNDARY_KEYWORDS = {
     "quant",
     "fund",
@@ -28,7 +27,6 @@ _BOUNDARY_KEYWORDS = {
     "mod",
 }
 
-# If these appear, treat as non-finance even if "quant" matched earlier.
 _HARD_NEGATIVES = [
     "quantum",
     "quantization",
@@ -43,22 +41,23 @@ _HARD_NEGATIVES = [
 
 
 def normalize(text: str | None) -> str:
-    return (text or "").lower()
+    """Lowercase and treat hyphen/underscore like spaces (supply-chain ~= supply chain)."""
+    t = (text or "").lower()
+    t = re.sub(r"[-_/]+", " ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
 
 
 def _keyword_pattern(kw: str) -> re.Pattern:
-    k = kw.lower().strip()
+    k = normalize(kw)
     escaped = re.escape(k)
     if k in _BOUNDARY_KEYWORDS or len(k) <= 3:
-        # word-ish boundary: avoid matching inside longer alpha tokens
         return re.compile(rf"(?<![a-z0-9]){escaped}(?![a-z0-9])", re.I)
-    if k == "quant":  # pragma: no cover - kept in set above
-        return re.compile(rf"(?<![a-z0-9])quant(?!um|ization|ized|en)", re.I)
     return re.compile(escaped, re.I)
 
 
 def contains_any(text: str, keywords: Iterable[str]) -> List[str]:
-    """Return keywords that match in text (case-insensitive, boundary-aware for short tokens)."""
+    """Return keywords that match in text (case-insensitive, hyphen-tolerant)."""
     t = normalize(text)
     hits = []
     for kw in keywords:
@@ -78,14 +77,12 @@ def score_text(
     blacklist: Sequence[str],
 ) -> dict:
     """
-    Score a repo name+description for financial relevance and topic fit.
-
-    Returns dict with score, hit lists, and rejected flag.
+    Score a repo name+description(+topics) for financial relevance and topic fit.
     """
     t = normalize(text)
 
     for neg in _HARD_NEGATIVES:
-        if neg in t:
+        if normalize(neg) in t or neg in t:
             return {
                 "score": 0.0,
                 "rejected": True,
@@ -110,7 +107,6 @@ def score_text(
     topic_hits = contains_any(t, topic_signals)
     skill_hits = contains_any(t, skill_signals)
 
-    # Weighted scoring: topic fit matters most for thematic batches.
     score = (
         2.5 * len(set(h.lower() for h in finance_hits))
         + 3.0 * len(set(h.lower() for h in topic_hits))
